@@ -4,6 +4,9 @@ from observable import Observable
 from event import Event  # Import the Event class
 from user import User
 
+user_pairs = []
+
+
 class Message(Observable):
   '''
   Den här klassen representerar ett meddelande mellan två användare. Det
@@ -38,25 +41,32 @@ class Message(Observable):
   
   def get_receiver(self) -> User:
     return self.__receiver
-  
+
   def build(self) -> Message:
     print("Message built")
     if "mössor" in self.__message:
       print("Message contains 'mössor'")
       if self.__sender is not None:  # Check if sender is set
-        #self.add_observer(self)
         self.notify_observers(self)
-    user_pairs = {}
     sender = self.__sender.get_name()
     receiver = self.__receiver.get_name()
     user_pair = (sender, receiver)
-    if user_pair in user_pairs:
-      user_pairs[user_pair] += 1
+    user_pair_reverse = (receiver, sender)
+    if user_pair_reverse in user_pairs:
+      user_pairs.append(user_pair_reverse)
     else:
-      user_pairs[user_pair] = 1
-      for pair, count in user_pairs.items():
-        sender, receiver = pair
-        print(f"{sender} <-> {receiver}: {count}")
+      user_pairs.append(user_pair)
+    count = 0
+    for user_pairs in user_pairs:
+      print(user_pairs)
+      count += 1
+    print(count)
+    #  user_pairs.append[user_pair] += 1
+    #else:
+    #  user_pairs[user_pair] = 1
+    #  for pair, count in user_pairs.items():
+    #    sender, receiver = pair
+    #    print(f"{pair} <-> : {count}")
     return self
 
 
