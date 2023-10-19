@@ -46,17 +46,17 @@ class Message(Observable):
       if self.__sender is not None:  # Check if sender is set
         #self.add_observer(self)
         self.notify_observers(self)
-        user_pairs = {}
-        sender = self.__sender.get_name()
-        receiver = self.__receiver.get_name()
-        user_pair = (sender, receiver)
-        if user_pair in user_pairs:
-          user_pairs[user_pair] += 1
-        else:
-          user_pairs[user_pair] = 1
-          for pair, count in user_pairs.items():
-            sender, receiver = pair
-            print(f"{sender} <-> {receiver}: {count}")
+    user_pairs = {}
+    sender = self.__sender.get_name()
+    receiver = self.__receiver.get_name()
+    user_pair = (sender, receiver)
+    if user_pair in user_pairs:
+      user_pairs[user_pair] += 1
+    else:
+      user_pairs[user_pair] = 1
+      for pair, count in user_pairs.items():
+        sender, receiver = pair
+        print(f"{sender} <-> {receiver}: {count}")
     return self
 
 
