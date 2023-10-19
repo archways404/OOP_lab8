@@ -14,6 +14,7 @@ class UserEvent(Event):
 	STATUS_UPDATED = 2
 	FRIEND_ADDED = 3
 	FRIEND_REMOVED = 4
+	MESSAGE = 5
 
 	def __init__(self, subject: object, event_type: int):
 		'''

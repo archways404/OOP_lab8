@@ -1,7 +1,10 @@
 from __future__ import annotations
 import typing
 from observable import Observable
+from event import Event  # Import the Event class
 from user import User
+
+user_pairs = {}
 
 class Message(Observable):
   '''
@@ -39,12 +42,36 @@ class Message(Observable):
     return self.__receiver
   
   def build(self) -> Message:
-    # Check if "mössor" exists in the message
     if "mössor" in self.__message:
-        print("Message contains 'mössor'")
-        self.notify_observers(self)
+      print("Message contains 'mössor'")
+      if self.__sender is not None:  # Check if sender is set
+        self.add_observer(self)
+        message_event = Event("MESSAGE", self)
+        self.notify_observers(message_event)
+        display_user_pairs(user_pairs, self.__message)
     return self
+  
+  def notify_observers(self, event: Event) -> None:
+    for observer in self.__observers:
+        observer.update(event)
+        if isinstance(observer, MessageObserver):
+            sender = event.get_subject().get_sender().get_name()
+            receiver = event.get_subject().get_receiver().get_name()
 
-message = Message()
-message.message("mössor")
-message.build()  # This will check for "mössor" in the message
+            # Create a tuple representing the user pair
+            user_pair = (sender, receiver)
+            # Check if this user pair already exists in the dictionary
+            if user_pair in user_pairs:
+                user_pairs[user_pair] += 1
+            else:
+                user_pairs[user_pair] = 1
+
+
+def display_user_pairs(user_pairs, message: Message):
+  for pair, count in user_pairs.items():
+    sender, receiver = pair
+    print(f"{sender} <-> {receiver}: {count} messages from '{message.get_message()}'")
+
+
+
+

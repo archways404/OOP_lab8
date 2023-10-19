@@ -31,6 +31,9 @@ class SecretService(Observer):
 			self.__analyze_new_friend(event.get_subject())
 		elif event.get_event_type() == UserEvent.FRIEND_REMOVED:
 			self.__analyze_unfriend(event.get_subject())
+		elif event.get_event_type() == UserEvent.MESSAGE:  # Corrected attribute name
+			self.__analyze_message(event.get_subject())
+
 
 	def __analyze_new_friend(self, user: User) -> None:
 		print("🕵️ " + self.__name + ": " +
@@ -40,5 +43,7 @@ class SecretService(Observer):
 	
 	def __analyze_unfriend(self, user: User) -> None:
 		print("🕵️ " + self.__name + ": " +
-			"Noting that " + user.get_name() +
-			" has one less friend")
+			"Noting that " + user.get_name() + " has one less friend")
+		
+	def __analyze_message(self, user: User) -> None:
+	  print("🕵️ " + self.__name + ": " +	"ERROR")

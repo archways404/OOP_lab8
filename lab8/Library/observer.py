@@ -11,4 +11,4 @@ class Observer(ABC):
 
 	@abstractmethod
 	def update(self, event: Event) -> None:
-		pass
+		print(f"Received event: {event.data}")
