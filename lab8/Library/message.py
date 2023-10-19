@@ -4,8 +4,6 @@ from observable import Observable
 from event import Event  # Import the Event class
 from user import User
 
-user_pairs = {}
-
 class Message(Observable):
   '''
   Den här klassen representerar ett meddelande mellan två användare. Det
@@ -42,35 +40,26 @@ class Message(Observable):
     return self.__receiver
   
   def build(self) -> Message:
+    print("Message built")
     if "mössor" in self.__message:
       print("Message contains 'mössor'")
       if self.__sender is not None:  # Check if sender is set
-        self.add_observer(self)
-        message_event = Event("MESSAGE", self)
-        self.notify_observers(message_event)
-        display_user_pairs(user_pairs, self.__message)
+        #self.add_observer(self)
+        self.notify_observers(self)
+        user_pairs = {}
+        sender = self.__sender.get_name()
+        receiver = self.__receiver.get_name()
+        user_pair = (sender, receiver)
+        if user_pair in user_pairs:
+          user_pairs[user_pair] += 1
+        else:
+          user_pairs[user_pair] = 1
+          for pair, count in user_pairs.items():
+            sender, receiver = pair
+            print(f"{sender} <-> {receiver}: {count}")
     return self
-  
-  def notify_observers(self, event: Event) -> None:
-    for observer in self.__observers:
-        observer.update(event)
-        if isinstance(observer, MessageObserver):
-            sender = event.get_subject().get_sender().get_name()
-            receiver = event.get_subject().get_receiver().get_name()
-
-            # Create a tuple representing the user pair
-            user_pair = (sender, receiver)
-            # Check if this user pair already exists in the dictionary
-            if user_pair in user_pairs:
-                user_pairs[user_pair] += 1
-            else:
-                user_pairs[user_pair] = 1
 
 
-def display_user_pairs(user_pairs, message: Message):
-  for pair, count in user_pairs.items():
-    sender, receiver = pair
-    print(f"{sender} <-> {receiver}: {count} messages from '{message.get_message()}'")
 
 
 

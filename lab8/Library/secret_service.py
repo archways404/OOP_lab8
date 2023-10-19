@@ -31,7 +31,7 @@ class SecretService(Observer):
 			self.__analyze_new_friend(event.get_subject())
 		elif event.get_event_type() == UserEvent.FRIEND_REMOVED:
 			self.__analyze_unfriend(event.get_subject())
-		elif event.get_event_type() == UserEvent.MESSAGE:  # Corrected attribute name
+		elif event.get_event_type() == UserEvent.MESSAGE:
 			self.__analyze_message(event.get_subject())
 
 
